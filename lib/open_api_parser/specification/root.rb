@@ -9,7 +9,7 @@ module OpenApiParser
 
       def endpoint(path, request_method)
         uri = URI.parse(path)
-        requested_path = uri.path.gsub(/\..+\z/, "")
+        requested_path = uri.path#.gsub(/\..+\z/, "")
 
         matching_path_details = @raw["paths"].detect do |path_name, path|
           requested_path =~ to_pattern(path_name) &&
