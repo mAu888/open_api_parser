@@ -7,9 +7,27 @@ module OpenApiParser
         @raw = raw
       end
 
+      def endpoints(path)
+        uri = URI.parse(path)
+        requested_path = uri.path
+
+        matching_path_details = @raw["paths"].detect do |path_name, path|
+          requested_path =~ to_pattern(path_name)
+        end
+        return nil if matching_path_details.nil?
+
+        matching_name, matching_path = matching_path_details
+
+        matching_path.map do |method, schema|
+          Endpoint.new(matching_name, method, schema)
+        end
+      rescue URI::InvalidURIError
+        nil
+      end
+
       def endpoint(path, request_method)
         uri = URI.parse(path)
-        requested_path = uri.path#.gsub(/\..+\z/, "")
+        requested_path = uri.path
 
         matching_path_details = @raw["paths"].detect do |path_name, path|
           requested_path =~ to_pattern(path_name) &&
