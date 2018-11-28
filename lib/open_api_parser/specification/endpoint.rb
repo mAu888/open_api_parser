@@ -45,6 +45,12 @@ module OpenApiParser
         @query_schema ||= parameter_schema(restrictive_schema, "query")
       end
 
+      def status_codes
+        @raw.fetch("responses", {}).keys
+          .select { |s| s != "default" }
+          .map(&:to_i)
+      end
+
       def response_body_schema(status)
         response = response_from_status(status)
         return restrictive_schema if response.nil?

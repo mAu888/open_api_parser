@@ -22,6 +22,13 @@ RSpec.describe OpenApiParser::Specification::Endpoint do
     end
   end
 
+  describe "status_codes" do
+    it "filters the default fallback" do
+      endpoint = root.endpoint("/animals/1", "GET")
+      expect(endpoint.status_codes).to eq [200]
+    end
+  end
+
   describe "body_schema" do
     it "returns the schema for the body" do
       endpoint = root.endpoint("/animals", "post")

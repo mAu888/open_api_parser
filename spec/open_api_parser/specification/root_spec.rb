@@ -12,7 +12,7 @@ RSpec.describe OpenApiParser::Specification::Root do
     it "returns a list of endpoints for a given path" do
       endpoints = root.endpoints("/animals/1")
 
-      expect(endpoints.size).rto eq(2)
+      expect(endpoints.size).to eq(2)
     end
   end
 
